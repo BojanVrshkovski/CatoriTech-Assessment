@@ -37,6 +37,12 @@ public class User {
 		this.contactRole = contactRole;
 	}
 
+	public User(String username, String password, UserRole contactRole) {
+		this.username = username;
+		this.password = password;
+		this.contactRole = contactRole;
+	}
+
 	public Long getId() {
 		return id;
 	}
