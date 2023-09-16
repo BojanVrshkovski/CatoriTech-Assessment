@@ -12,9 +12,4 @@ public class CatoritechApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(CatoritechApplication.class, args);
 	}
-
-	@Bean
-	PasswordEncoder passwordEncoder(){
-		return new BCryptPasswordEncoder(10);
-	}
 }
