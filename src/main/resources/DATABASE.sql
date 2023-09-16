@@ -2,7 +2,7 @@ CREATE TABLE users(
 	id BIGSERIAL PRIMARY KEY,
 	username varchar UNIQUE NOT NULL,
 	password varchar NOT NULL,
-	contact_role varchar NOT NULL
+	user_role varchar NOT NULL
 );
 
 CREATE TABLE contacts(
@@ -15,3 +15,6 @@ CREATE TABLE contacts(
 	user_id BIGINT,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
+
+SELECT * FROM users
+SELECT * FROM contacts
