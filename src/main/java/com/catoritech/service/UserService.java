@@ -1,7 +1,7 @@
 package com.catoritech.service;
 
-import org.springframework.security.core.userdetails.UserDetails;
+import com.catoritech.entity.requests.UserRequest;
 
 public interface UserService {
-	UserDetails loadUserByUsername(String username);
+	Long registerUser(UserRequest userRequest);
 }

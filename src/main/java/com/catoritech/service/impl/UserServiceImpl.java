@@ -1,35 +1,38 @@
 package com.catoritech.service.impl;
 
 import com.catoritech.entity.User;
+import com.catoritech.entity.requests.UserRequest;
+import com.catoritech.exceptions.UserAlreadyExistException;
 import com.catoritech.repository.UserRepository;
 import com.catoritech.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
 	private final UserRepository userRepository;
+	private final PasswordEncoder passwordEncoder;
 
 	@Autowired
-	public UserServiceImpl(UserRepository userRepository) {
+	public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
 		this.userRepository = userRepository;
+		this.passwordEncoder = passwordEncoder;
 	}
 
 	@Override
-	public UserDetails loadUserByUsername(String username) {
-		User user = userRepository.findByUsername(username);
-		if (user == null) {
-			throw new UsernameNotFoundException("User not found with username: " + username);
+	public Long registerUser(UserRequest userRequest) {
+		User user = new User();
+		try {
+			user.setUsername(userRequest.getUsername());
+			user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+			user.setUserRole(userRequest.getUserRole());
+			user = userRepository.save(user);
+		}catch (DataIntegrityViolationException e) {
+			throw new UserAlreadyExistException("User with that username alredy exists");
 		}
-		return new org.springframework.security.core.userdetails.User(
-			user.getUsername(),
-			user.getPassword(),
-			List.of(new SimpleGrantedAuthority("ROLE_" + user.getContactRole()))
-		);
+		return user.getId();
 	}
 }
