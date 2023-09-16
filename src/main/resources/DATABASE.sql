@@ -1,4 +1,4 @@
-CREATE TABLE contact_details(
+CREATE TABLE users(
 	id BIGSERIAL PRIMARY KEY,
 	username varchar UNIQUE NOT NULL,
 	password varchar NOT NULL,
@@ -13,5 +13,5 @@ CREATE TABLE contacts(
 	phone VARCHAR(100) NOT NULL UNIQUE,
 	VAT VARCHAR(20) NOT NULL,
 	user_id BIGINT,
-    FOREIGN KEY (user_id) REFERENCES contact_details(id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
