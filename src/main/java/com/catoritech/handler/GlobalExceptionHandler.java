@@ -1,5 +1,6 @@
 package com.catoritech.handler;
 
+import com.catoritech.exceptions.ContactAlreadyExistException;
 import com.catoritech.exceptions.UserAlreadyExistException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,13 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(UserAlreadyExistException.class)
 	public ResponseEntity<String> handleAlreadyExistUserException(UserAlreadyExistException exception) {
+		log.error(CAUGHT_EXCEPTION_MESSAGE, exception);
+		String error = exception.getMessage();
+		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(ContactAlreadyExistException.class)
+	public ResponseEntity<String> handleAlreadyExistContactException(ContactAlreadyExistException exception) {
 		log.error(CAUGHT_EXCEPTION_MESSAGE, exception);
 		String error = exception.getMessage();
 		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
