@@ -4,6 +4,7 @@ import com.catoritech.entity.Contact;
 import com.catoritech.entity.dto.ContactDto;
 import com.catoritech.entity.requests.ContactRequest;
 import com.catoritech.exceptions.ContactAlreadyExistException;
+import com.catoritech.exceptions.ContactInvalidIdException;
 import com.catoritech.repository.ContactRepository;
 import com.catoritech.service.ContactService;
 import org.modelmapper.ModelMapper;
@@ -16,6 +17,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import static com.catoritech.constants.LoggerAndExceptionConstants.ALREADY_EXIST_CONTACT_DB_MESSAGE;
+import static com.catoritech.constants.LoggerAndExceptionConstants.READ_CONTACT_MESSAGE;
 import static com.catoritech.constants.LoggerAndExceptionConstants.SUCCESSFULLY_ADDED_CONTACT_MESSAGE;
 
 @Service
@@ -47,6 +49,8 @@ public class ContactServiceImpl implements ContactService {
 
 	@Override
 	public ContactDto readContactById(Long id) {
-		return null;
+		log.info(String.format(READ_CONTACT_MESSAGE, id));
+		Contact contact = contactRepository.findById(id).orElseThrow(ContactInvalidIdException::new);
+		return modelMapper.map(contact,ContactDto.class);
 	}
 }

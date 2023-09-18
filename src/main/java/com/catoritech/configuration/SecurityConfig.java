@@ -33,7 +33,8 @@ public class SecurityConfig {
 		RequestMatcher authenticatedMatchers = new OrRequestMatcher(
 			new AntPathRequestMatcher("/user"),
 			new AntPathRequestMatcher("/business"),
-			new AntPathRequestMatcher("/createContact")
+			new AntPathRequestMatcher("/createContact"),
+			new AntPathRequestMatcher("/contact/{id}")
 		);
 		RequestMatcher permitAllMatchers =  new OrRequestMatcher(
 			new AntPathRequestMatcher("/addUser"),
