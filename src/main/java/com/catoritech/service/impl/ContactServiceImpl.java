@@ -33,7 +33,7 @@ public class ContactServiceImpl implements ContactService {
 		Contact contact;
 		try {
 			contact = modelMapper.map(contactRequest,Contact.class);
-			contactRepository.save(contact);
+			contact = contactRepository.save(contact);
 			log.info(String.format(SUCCESSFULLY_ADDED_CONTACT_MESSAGE,contactRequest.getFirstName()));
 		}catch (DataIntegrityViolationException e){
 			log.error(String.format(ALREADY_EXIST_CONTACT_DB_MESSAGE,contactRequest.getPhone()));

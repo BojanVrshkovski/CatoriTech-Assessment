@@ -1,9 +1,7 @@
 package com.catoritech.controller;
 
 import com.catoritech.entity.requests.ContactRequest;
-import com.catoritech.entity.requests.UserRequest;
 import com.catoritech.service.ContactService;
-import com.catoritech.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

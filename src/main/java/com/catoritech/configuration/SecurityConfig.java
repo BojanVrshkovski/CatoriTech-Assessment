@@ -32,7 +32,8 @@ public class SecurityConfig {
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		RequestMatcher authenticatedMatchers = new OrRequestMatcher(
 			new AntPathRequestMatcher("/user"),
-			new AntPathRequestMatcher("/business")
+			new AntPathRequestMatcher("/business"),
+			new AntPathRequestMatcher("/createContact")
 		);
 		RequestMatcher permitAllMatchers =  new OrRequestMatcher(
 			new AntPathRequestMatcher("/addUser"),
