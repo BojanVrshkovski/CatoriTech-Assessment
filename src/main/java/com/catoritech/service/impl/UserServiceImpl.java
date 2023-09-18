@@ -12,7 +12,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import static com.catoritech.constants.LoggerAndExceptionConstants.ALREADY_EXIST_USER_DB_MESSAGE;
-import static com.catoritech.constants.LoggerAndExceptionConstants.SUCCESSFULLY_ADDED_EMPLOYEE_MESSAGE;
+import static com.catoritech.constants.LoggerAndExceptionConstants.SUCCESSFULLY_REGISTERED_USER_MESSAGE;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
 			user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
 			user.setUserRole(userRequest.getUserRole());
 			user = userRepository.save(user);
-			log.info(String.format(SUCCESSFULLY_ADDED_EMPLOYEE_MESSAGE,userRequest.getUsername()));
+			log.info(String.format(SUCCESSFULLY_REGISTERED_USER_MESSAGE,userRequest.getUsername()));
 		}catch (DataIntegrityViolationException e) {
 			log.error(String.format(ALREADY_EXIST_USER_DB_MESSAGE,user.getUsername()));
 			throw new UserAlreadyExistException(String.format(ALREADY_EXIST_USER_DB_MESSAGE,user.getUsername()));

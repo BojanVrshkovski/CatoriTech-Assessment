@@ -30,6 +30,7 @@ public class User {
 	public User() {
 	}
 
+
 	public User(Long id, String username, String password, UserRole userRole) {
 		this.id = id;
 		this.username = username;
@@ -58,6 +59,8 @@ public class User {
 	public void setUsername(String username) {
 		this.username = username;
 	}
+
+
 
 	public String getPassword() {
 		return password;

@@ -45,4 +45,10 @@ public class ContactController {
 		return ResponseEntity.ok(contactDto);
 	}
 
+	@GetMapping("/contact/profile")
+	public ResponseEntity<ContactDto> readContactOwnInformation() {
+		ContactDto contactDto = contactService.readContactInformation();
+
+		return ResponseEntity.ok(contactDto);
+	}
 }

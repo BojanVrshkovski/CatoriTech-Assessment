@@ -23,7 +23,6 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 public class SecurityConfig {
 
 	@Bean
-	//authentication
 	public UserDetailsService userDetailsService() {
 		return new UserUserDetailsService();
 	}
@@ -34,7 +33,8 @@ public class SecurityConfig {
 			new AntPathRequestMatcher("/user"),
 			new AntPathRequestMatcher("/business"),
 			new AntPathRequestMatcher("/createContact"),
-			new AntPathRequestMatcher("/contact/{id}")
+			new AntPathRequestMatcher("/contact/{id}"),
+			new AntPathRequestMatcher("/contact/profile")
 		);
 		RequestMatcher permitAllMatchers =  new OrRequestMatcher(
 			new AntPathRequestMatcher("/addUser"),
