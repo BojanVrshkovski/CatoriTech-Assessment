@@ -1,6 +1,6 @@
 package com.catoritech.util;
 
-public class ContactConstants {
+public final class ContactConstants {
 	public static final Long ID = 1L;
 	public static final String FIRST_NAME = "Bojan";
 	public static final String LAST_NAME = "Vrshkovski";
