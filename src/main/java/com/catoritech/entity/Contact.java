@@ -47,6 +47,15 @@ public class Contact {
 		this.userId = userId;
 	}
 
+	public Contact(String firstName, String lastName, String address, String phone, String VAT, Long userId) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.address = address;
+		this.phone = phone;
+		this.VAT = VAT;
+		this.userId = userId;
+	}
+
 	public Long getId() {
 		return id;
 	}
