@@ -1,6 +1,7 @@
 package com.catoritech.util;
 
 import com.catoritech.entity.Contact;
+import com.catoritech.entity.dto.ContactDto;
 import com.catoritech.entity.requests.ContactRequest;
 
 import static com.catoritech.util.ContactConstants.ADDRESS;
@@ -21,5 +22,10 @@ public final class ContactFactory {
 	public static Contact getDefaultContact(){
 		Contact contact = new Contact(ID,FIRST_NAME,LAST_NAME,ADDRESS,PHONE,VAT,USER_ID);
 		return contact;
+	}
+
+	public static ContactDto getDefaultContactDto(){
+		ContactDto contactDto = new ContactDto(ID,FIRST_NAME,LAST_NAME,ADDRESS,PHONE,VAT,USER_ID);
+		return contactDto;
 	}
 }

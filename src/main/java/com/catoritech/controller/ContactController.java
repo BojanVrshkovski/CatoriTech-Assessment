@@ -39,7 +39,7 @@ public class ContactController {
 
 	@GetMapping("/contact/{id}")
 	@PreAuthorize("hasAuthority('BUSINESS')")
-	public ResponseEntity<ContactDto> readEmployeeById(@PathVariable @NotNull Long id) {
+	public ResponseEntity<ContactDto> readContactById(@PathVariable @NotNull Long id) {
 		ContactDto contactDto = contactService.readContactById(id);
 
 		return ResponseEntity.ok(contactDto);
