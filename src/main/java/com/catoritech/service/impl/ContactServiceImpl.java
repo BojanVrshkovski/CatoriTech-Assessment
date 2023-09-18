@@ -1,5 +1,7 @@
 package com.catoritech.service.impl;
 
+import com.catoritech.entity.Contact;
+import com.catoritech.entity.requests.ContactRequest;
 import com.catoritech.repository.ContactRepository;
 import com.catoritech.service.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,5 +15,14 @@ public class ContactServiceImpl implements ContactService {
 	@Autowired
 	public ContactServiceImpl(ContactRepository contactRepository) {
 		this.contactRepository = contactRepository;
+	}
+
+	@Override
+	public Long createContact(ContactRequest contactRequest) {
+		Contact contact = new Contact();
+		try {
+
+		}
+		return null;
 	}
 }
