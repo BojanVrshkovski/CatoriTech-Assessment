@@ -51,10 +51,6 @@ public class ContactServiceImplTest {
 
 	@Test
 	public void testCreateContact_DuplicatePhone() {
-		ContactRequest contactRequest = new ContactRequest();
-		Contact contact = new Contact();
-		contact.setPhone("5551234567");
-
 		when(modelMapper.map(contactRequest, Contact.class)).thenReturn(contact);
 		when(contactRepository.save(contact)).thenThrow(DataIntegrityViolationException.class);
 
