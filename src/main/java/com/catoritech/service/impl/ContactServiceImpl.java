@@ -1,6 +1,7 @@
 package com.catoritech.service.impl;
 
 import com.catoritech.entity.Contact;
+import com.catoritech.entity.dto.ContactDto;
 import com.catoritech.entity.requests.ContactRequest;
 import com.catoritech.exceptions.ContactAlreadyExistException;
 import com.catoritech.repository.ContactRepository;
@@ -10,6 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import static com.catoritech.constants.LoggerAndExceptionConstants.ALREADY_EXIST_CONTACT_DB_MESSAGE;
@@ -40,5 +43,10 @@ public class ContactServiceImpl implements ContactService {
 			throw new ContactAlreadyExistException(String.format(ALREADY_EXIST_CONTACT_DB_MESSAGE, contactRequest.getPhone()));
 		}
 		return contact.getId();
+	}
+
+	@Override
+	public ContactDto readContactById(Long id) {
+		return null;
 	}
 }
