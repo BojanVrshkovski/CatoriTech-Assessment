@@ -22,7 +22,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
 import static com.catoritech.util.ContactConstants.EXCEPTION_MESSAGE;
 import static com.catoritech.util.ContactConstants.ID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -87,6 +86,17 @@ public class ContactControllerTest {
 		ResponseEntity<ContactDto> response = contactController.readContactById(ID);
 
 		assertEquals(HttpStatus.OK, response.getStatusCode());
+		assertEquals(contactDto, response.getBody());
+	}
+
+	@Test
+	public void testReadContactOwnInformation_Success() {
+		when(contactService.readContactInformation()).thenReturn(contactDto);
+
+		ResponseEntity<ContactDto> response = contactController.readContactOwnInformation();
+
+		assertEquals(HttpStatus.OK, response.getStatusCode());
+
 		assertEquals(contactDto, response.getBody());
 	}
 }
