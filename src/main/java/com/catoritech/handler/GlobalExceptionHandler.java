@@ -1,6 +1,8 @@
 package com.catoritech.handler;
 
+import com.catoritech.exceptions.BusinessCanNotAccessContactException;
 import com.catoritech.exceptions.ContactAlreadyExistException;
+import com.catoritech.exceptions.IndividualUserCanNotAccessException;
 import com.catoritech.exceptions.UserAlreadyExistException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +31,18 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(ContactAlreadyExistException.class)
 	public ResponseEntity<String> handleAlreadyExistContactException(ContactAlreadyExistException exception) {
+		log.error(CAUGHT_EXCEPTION_MESSAGE, exception);
+		String error = exception.getMessage();
+		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+	}
+	@ExceptionHandler(BusinessCanNotAccessContactException.class)
+	public ResponseEntity<String> handleBusinessCanNotAccessContactException(BusinessCanNotAccessContactException exception) {
+		log.error(CAUGHT_EXCEPTION_MESSAGE, exception);
+		String error = exception.getMessage();
+		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+	}
+	@ExceptionHandler(IndividualUserCanNotAccessException.class)
+	public ResponseEntity<String> handleIndividualCanNotAccessContactException(IndividualUserCanNotAccessException exception) {
 		log.error(CAUGHT_EXCEPTION_MESSAGE, exception);
 		String error = exception.getMessage();
 		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
