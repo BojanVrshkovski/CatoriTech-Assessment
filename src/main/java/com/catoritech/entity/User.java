@@ -26,6 +26,8 @@ public class User {
 	@Column(name = "user_role", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private UserRole userRole;
+	@Column(name = "business_id")
+	private Long businessId;
 
 	public User() {
 	}
@@ -42,6 +44,14 @@ public class User {
 		this.username = username;
 		this.password = password;
 		this.userRole = userRole;
+	}
+
+	public User(Long id, String username, String password, UserRole userRole, Long businessId) {
+		this.id = id;
+		this.username = username;
+		this.password = password;
+		this.userRole = userRole;
+		this.businessId = businessId;
 	}
 
 	public Long getId() {
@@ -76,5 +86,13 @@ public class User {
 
 	public void setUserRole(UserRole userRole) {
 		this.userRole = userRole;
+	}
+
+	public Long getBusinessId() {
+		return businessId;
+	}
+
+	public void setBusinessId(Long businessId) {
+		this.businessId = businessId;
 	}
 }
