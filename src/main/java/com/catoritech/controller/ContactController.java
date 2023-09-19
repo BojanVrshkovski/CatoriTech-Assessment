@@ -51,4 +51,12 @@ public class ContactController {
 
 		return ResponseEntity.ok(contactDto);
 	}
+
+	@GetMapping("/contacts/{id}")
+	@PreAuthorize("hasAnyAuthority('BUSINESS','INDIVIDUAL')")
+	public ResponseEntity<ContactDto> readContactByIdNew(@PathVariable @NotNull Long id) {
+		ContactDto contactDto = contactService.readContactByIdNew(id);
+
+		return ResponseEntity.ok(contactDto);
+	}
 }

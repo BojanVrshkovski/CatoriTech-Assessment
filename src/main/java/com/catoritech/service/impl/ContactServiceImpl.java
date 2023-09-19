@@ -5,8 +5,10 @@ import com.catoritech.entity.User;
 import com.catoritech.entity.dto.ContactDto;
 import com.catoritech.entity.enums.UserRole;
 import com.catoritech.entity.requests.ContactRequest;
+import com.catoritech.exceptions.BusinessCanNotAccessContactException;
 import com.catoritech.exceptions.ContactAlreadyExistException;
 import com.catoritech.exceptions.ContactInvalidIdException;
+import com.catoritech.exceptions.IndividualUserCanNotAccessException;
 import com.catoritech.exceptions.UserNotFoundException;
 import com.catoritech.repository.ContactRepository;
 import com.catoritech.repository.UserRepository;
@@ -82,35 +84,25 @@ public class ContactServiceImpl implements ContactService {
 
 	@Override
 	public ContactDto readContactByIdNew(Long id) {
-		User user = getCurrentUser(); // Custom method to get the current user
+		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+		String username = userDetails.getUsername();
+
+		User user = userRepository.findByUsername(username)
+		                          .orElseThrow(() -> new UserNotFoundException(String.format(USER_NOT_FOUND_MESSAGE,username)));
 
 		Contact contact = contactRepository.findById(id).orElseThrow(ContactInvalidIdException::new);
 
 		if (user.getUserRole() == UserRole.BUSINESS) {
-			// Check if the business associated with the contact matches the user's business
 			if (contact.getBusinessId() == null || !contact.getBusinessId().equals(user.getBusinessId())) {
-				try {
-					throw new AccessDeniedException("Business user does not have access to this contact.");
-				} catch (AccessDeniedException e) {
-					throw new RuntimeException(e);
-				}
+				throw new BusinessCanNotAccessContactException("Business user does not have access to this contact.");
+			}
+		} else if (user.getUserRole() == UserRole.INDIVIDUAL) {
+			if (!contact.getUserId().equals(user.getId())) {
+				throw new IndividualUserCanNotAccessException("Individual user can only access their own contact information.");
 			}
 		}
 
 		return modelMapper.map(contact, ContactDto.class);
-	}
-
-	public User getCurrentUser() {
-		// Get the currently authenticated user's details from the SecurityContextHolder
-		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-		if (principal instanceof UserDetails) {
-			// Cast UserDetails to your custom User class
-			return (User) principal;
-		} else {
-			// Handle the case where the principal is not a UserDetails (e.g., anonymous user)
-			// You can return null or handle it according to your application's logic.
-			return null;
-		}
 	}
 }
