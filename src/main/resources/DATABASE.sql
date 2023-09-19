@@ -16,5 +16,15 @@ CREATE TABLE contacts(
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
+ALTER TABLE contacts
+ADD COLUMN business_id BIGINT,
+ADD CONSTRAINT fk_business_id FOREIGN KEY (business_id) REFERENCES businesses(id) ON DELETE CASCADE;
+
+
+CREATE TABLE businesses (
+    id BIGSERIAL PRIMARY KEY,
+    business_name VARCHAR(255) NOT NULL
+);
+
 SELECT * FROM users
 SELECT * FROM contacts
