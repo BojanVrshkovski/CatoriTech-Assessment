@@ -8,4 +8,5 @@ public interface ContactService {
 	ContactDto readContactById(Long id);
 	ContactDto readContactInformation();
 	ContactDto readContactByIdNew(Long id);
+	void deleteContactById(Long id);
 }

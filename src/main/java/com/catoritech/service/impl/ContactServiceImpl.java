@@ -107,4 +107,29 @@ public class ContactServiceImpl implements ContactService {
 
 		return modelMapper.map(contact, ContactDto.class);
 	}
+
+	@Override
+	public void deleteContactById(Long id) {
+		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String username = userDetails.getUsername();
+
+		User user = userRepository.findByUsername(username)
+		                          .orElseThrow(() -> new UserNotFoundException(String.format(USER_NOT_FOUND_MESSAGE, username)));
+
+		Contact contact = contactRepository.findById(id).orElseThrow(ContactInvalidIdException::new);
+
+		if (user.getUserRole() == UserRole.BUSINESS) {
+			if (contact.getBusinessId() == null || !contact.getBusinessId().equals(user.getBusinessId())) {
+				log.error(String.format(BUSINESS_CAN_NOT_ACCESS_CONTACT, username));
+				throw new BusinessCanNotAccessContactException(String.format(BUSINESS_CAN_NOT_ACCESS_CONTACT, username));
+			}
+		} else if (user.getUserRole() == UserRole.INDIVIDUAL) {
+			if (!contact.getUserId().equals(user.getId())) {
+				log.error(String.format(INDIVIDUAL_USER_CAN_ACCESS_OWN_INFO));
+				throw new IndividualUserCanNotAccessException(String.format(INDIVIDUAL_USER_CAN_ACCESS_OWN_INFO));
+			}
+		}
+		
+		contactRepository.delete(contact);
+	}
 }
