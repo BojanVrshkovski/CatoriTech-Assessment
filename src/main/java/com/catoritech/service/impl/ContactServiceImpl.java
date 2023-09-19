@@ -82,6 +82,35 @@ public class ContactServiceImpl implements ContactService {
 
 	@Override
 	public ContactDto readContactByIdNew(Long id) {
-		return null;
+		User user = getCurrentUser(); // Custom method to get the current user
+
+		Contact contact = contactRepository.findById(id).orElseThrow(ContactInvalidIdException::new);
+
+		if (user.getUserRole() == UserRole.BUSINESS) {
+			// Check if the business associated with the contact matches the user's business
+			if (contact.getBusinessId() == null || !contact.getBusinessId().equals(user.getBusinessId())) {
+				try {
+					throw new AccessDeniedException("Business user does not have access to this contact.");
+				} catch (AccessDeniedException e) {
+					throw new RuntimeException(e);
+				}
+			}
+		}
+
+		return modelMapper.map(contact, ContactDto.class);
+	}
+
+	public User getCurrentUser() {
+		// Get the currently authenticated user's details from the SecurityContextHolder
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+		if (principal instanceof UserDetails) {
+			// Cast UserDetails to your custom User class
+			return (User) principal;
+		} else {
+			// Handle the case where the principal is not a UserDetails (e.g., anonymous user)
+			// You can return null or handle it according to your application's logic.
+			return null;
+		}
 	}
 }
