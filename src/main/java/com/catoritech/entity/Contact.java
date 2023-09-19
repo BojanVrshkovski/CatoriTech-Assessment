@@ -34,6 +34,9 @@ public class Contact {
 	@JoinColumn(name = "user_id", referencedColumnName = "id")
 	private Long userId;
 
+	@JoinColumn(name = "business_id", referencedColumnName = "id")
+	private Long businessId;
+
 	public Contact() {
 	}
 
@@ -54,6 +57,19 @@ public class Contact {
 		this.phone = phone;
 		this.VAT = VAT;
 		this.userId = userId;
+	}
+
+	public Contact(
+		Long id, String firstName, String lastName, String address, String phone, String VAT, Long userId,
+		Long businessId) {
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.address = address;
+		this.phone = phone;
+		this.VAT = VAT;
+		this.userId = userId;
+		this.businessId = businessId;
 	}
 
 	public Long getId() {
@@ -110,5 +126,13 @@ public class Contact {
 
 	public void setUserId(Long userId) {
 		this.userId = userId;
+	}
+
+	public Long getBusinessId() {
+		return businessId;
+	}
+
+	public void setBusinessId(Long businessId) {
+		this.businessId = businessId;
 	}
 }

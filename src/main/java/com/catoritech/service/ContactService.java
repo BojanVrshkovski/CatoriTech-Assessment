@@ -7,4 +7,5 @@ public interface ContactService {
 	Long createContact(ContactRequest contactRequest);
 	ContactDto readContactById(Long id);
 	ContactDto readContactInformation();
+	ContactDto readContactByIdNew(Long id);
 }

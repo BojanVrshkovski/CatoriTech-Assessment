@@ -3,6 +3,7 @@ package com.catoritech.service.impl;
 import com.catoritech.entity.Contact;
 import com.catoritech.entity.User;
 import com.catoritech.entity.dto.ContactDto;
+import com.catoritech.entity.enums.UserRole;
 import com.catoritech.entity.requests.ContactRequest;
 import com.catoritech.exceptions.ContactAlreadyExistException;
 import com.catoritech.exceptions.ContactInvalidIdException;
@@ -19,6 +20,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+
+import java.nio.file.AccessDeniedException;
 
 import static com.catoritech.constants.LoggerAndExceptionConstants.ALREADY_EXIST_CONTACT_DB_MESSAGE;
 import static com.catoritech.constants.LoggerAndExceptionConstants.CONTACT_NOT_FOUND_FOR_USER_MESSAGE;
@@ -77,4 +80,8 @@ public class ContactServiceImpl implements ContactService {
 		return modelMapper.map(contact, ContactDto.class);
 	}
 
+	@Override
+	public ContactDto readContactByIdNew(Long id) {
+		return null;
+	}
 }
