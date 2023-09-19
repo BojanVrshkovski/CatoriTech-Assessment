@@ -26,7 +26,7 @@ public class ContactController {
 	}
 
 	@PostMapping("/createContact")
-	@PreAuthorize("hasAuthority('BUSINESS')")
+	@PreAuthorize("hasAnyAuthority('BUSINESS','INDIVIDUAL')")
 	public ResponseEntity<Void> createContact(@RequestBody ContactRequest contactRequest) {
 		Long id = contactService.createContact(contactRequest);
 
