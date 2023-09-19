@@ -16,7 +16,7 @@ import static com.catoritech.util.ContactConstants.VAT;
 public final class ContactFactory {
 
 	public static ContactRequest getContactRequest(){
-		ContactRequest contactRequest = new ContactRequest(FIRST_NAME,LAST_NAME,ADDRESS,PHONE,VAT,USER_ID);
+		ContactRequest contactRequest = new ContactRequest(FIRST_NAME,LAST_NAME,ADDRESS,PHONE,VAT,USER_ID,BUSINESS_ID);
 		return contactRequest;
 	}
 
