@@ -94,7 +94,7 @@ public class ContactServiceImpl implements ContactService {
 	public void deleteContactById(Long id) {
 		userDetails(id);
 		Contact contact = contactRepository.findById(id).orElseThrow(ContactInvalidIdException::new);
-		
+
 		contactRepository.delete(contact);
 	}
 

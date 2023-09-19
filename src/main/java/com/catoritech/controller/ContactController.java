@@ -1,5 +1,6 @@
 package com.catoritech.controller;
 
+import com.catoritech.entity.Contact;
 import com.catoritech.entity.dto.ContactDto;
 import com.catoritech.entity.requests.ContactRequest;
 import com.catoritech.service.ContactService;
@@ -7,6 +8,7 @@ import org.antlr.v4.runtime.misc.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -58,5 +60,13 @@ public class ContactController {
 		ContactDto contactDto = contactService.readContactByIdNew(id);
 
 		return ResponseEntity.ok(contactDto);
+	}
+
+	@DeleteMapping("/contact/{id}")
+	@PreAuthorize("hasAnyAuthority('BUSINESS','INDIVIDUAL')")
+	public ResponseEntity<Contact> deleteContactById(@PathVariable @NotNull Long id) {
+		contactService.deleteContactById(id);
+
+		return ResponseEntity.noContent().build();
 	}
 }
