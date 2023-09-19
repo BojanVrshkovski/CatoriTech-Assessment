@@ -23,10 +23,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.nio.file.AccessDeniedException;
-
 import static com.catoritech.constants.LoggerAndExceptionConstants.ALREADY_EXIST_CONTACT_DB_MESSAGE;
+import static com.catoritech.constants.LoggerAndExceptionConstants.BUSINESS_CAN_NOT_ACCESS_CONTACT;
 import static com.catoritech.constants.LoggerAndExceptionConstants.CONTACT_NOT_FOUND_FOR_USER_MESSAGE;
+import static com.catoritech.constants.LoggerAndExceptionConstants.INDIVIDUAL_USER_CAN_ACCESS_OWN_INFO;
 import static com.catoritech.constants.LoggerAndExceptionConstants.READ_CONTACT_MESSAGE;
 import static com.catoritech.constants.LoggerAndExceptionConstants.SUCCESSFULLY_ADDED_CONTACT_MESSAGE;
 import static com.catoritech.constants.LoggerAndExceptionConstants.USER_NOT_FOUND_MESSAGE;
@@ -95,11 +95,11 @@ public class ContactServiceImpl implements ContactService {
 
 		if (user.getUserRole() == UserRole.BUSINESS) {
 			if (contact.getBusinessId() == null || !contact.getBusinessId().equals(user.getBusinessId())) {
-				throw new BusinessCanNotAccessContactException("Business user does not have access to this contact.");
+				throw new BusinessCanNotAccessContactException(String.format(BUSINESS_CAN_NOT_ACCESS_CONTACT,username));
 			}
 		} else if (user.getUserRole() == UserRole.INDIVIDUAL) {
 			if (!contact.getUserId().equals(user.getId())) {
-				throw new IndividualUserCanNotAccessException("Individual user can only access their own contact information.");
+				throw new IndividualUserCanNotAccessException(String.format(INDIVIDUAL_USER_CAN_ACCESS_OWN_INFO));
 			}
 		}
 

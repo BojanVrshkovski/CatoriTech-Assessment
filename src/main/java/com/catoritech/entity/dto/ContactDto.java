@@ -13,6 +13,7 @@ public class ContactDto {
 	private String VAT;
 
 	private Long userId;
+	private Long businessId;
 
 	public ContactDto() {
 	}
@@ -26,6 +27,19 @@ public class ContactDto {
 		this.phone = phone;
 		this.VAT = VAT;
 		this.userId = userId;
+	}
+
+	public ContactDto(
+		Long id, String firstName, String lastName, String address, String phone, String VAT, Long userId,
+		Long businessId) {
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.address = address;
+		this.phone = phone;
+		this.VAT = VAT;
+		this.userId = userId;
+		this.businessId = businessId;
 	}
 
 	public Long getId() {
@@ -82,5 +96,13 @@ public class ContactDto {
 
 	public void setUserId(Long userId) {
 		this.userId = userId;
+	}
+
+	public Long getBusinessId() {
+		return businessId;
+	}
+
+	public void setBusinessId(Long businessId) {
+		this.businessId = businessId;
 	}
 }

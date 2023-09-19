@@ -9,4 +9,6 @@ public final class LoggerAndExceptionConstants {
 	public static final String SUCCESSFULLY_ADDED_CONTACT_MESSAGE = "The contact with name: %s is successfully added in the db";
 	public static final String ALREADY_EXIST_CONTACT_DB_MESSAGE = "The contact with phone number: %s alredy exists in the db";
 	public static String READ_CONTACT_MESSAGE = "Contact with id: %d is trying to fetch his information";
+	public static String BUSINESS_CAN_NOT_ACCESS_CONTACT = "Business user with username %s does not have access to this contact";
+	public static String INDIVIDUAL_USER_CAN_ACCESS_OWN_INFO = "Individual user can only access their own contact information";
 }

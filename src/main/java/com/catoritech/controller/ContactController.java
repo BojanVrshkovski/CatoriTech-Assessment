@@ -37,7 +37,7 @@ public class ContactController {
 		return ResponseEntity.created(location).build();
 	}
 
-	@GetMapping("/contact/{id}")
+	@GetMapping("/contacts/{id}")
 	@PreAuthorize("hasAuthority('BUSINESS')")
 	public ResponseEntity<ContactDto> readContactById(@PathVariable @NotNull Long id) {
 		ContactDto contactDto = contactService.readContactById(id);
@@ -52,7 +52,7 @@ public class ContactController {
 		return ResponseEntity.ok(contactDto);
 	}
 
-	@GetMapping("/contacts/{id}")
+	@GetMapping("/contact/{id}")
 	@PreAuthorize("hasAnyAuthority('BUSINESS','INDIVIDUAL')")
 	public ResponseEntity<ContactDto> readContactByIdNew(@PathVariable @NotNull Long id) {
 		ContactDto contactDto = contactService.readContactByIdNew(id);
