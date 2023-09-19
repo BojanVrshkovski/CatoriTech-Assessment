@@ -5,6 +5,7 @@ import com.catoritech.entity.dto.ContactDto;
 import com.catoritech.entity.requests.ContactRequest;
 
 import static com.catoritech.util.ContactConstants.ADDRESS;
+import static com.catoritech.util.ContactConstants.BUSINESS_ID;
 import static com.catoritech.util.ContactConstants.FIRST_NAME;
 import static com.catoritech.util.ContactConstants.ID;
 import static com.catoritech.util.ContactConstants.LAST_NAME;
@@ -20,12 +21,12 @@ public final class ContactFactory {
 	}
 
 	public static Contact getDefaultContact(){
-		Contact contact = new Contact(ID,FIRST_NAME,LAST_NAME,ADDRESS,PHONE,VAT,USER_ID);
+		Contact contact = new Contact(ID,FIRST_NAME,LAST_NAME,ADDRESS,PHONE,VAT,USER_ID,BUSINESS_ID);
 		return contact;
 	}
 
 	public static ContactDto getDefaultContactDto(){
-		ContactDto contactDto = new ContactDto(ID,FIRST_NAME,LAST_NAME,ADDRESS,PHONE,VAT,USER_ID);
+		ContactDto contactDto = new ContactDto(ID,FIRST_NAME,LAST_NAME,ADDRESS,PHONE,VAT,USER_ID,BUSINESS_ID);
 		return contactDto;
 	}
 }

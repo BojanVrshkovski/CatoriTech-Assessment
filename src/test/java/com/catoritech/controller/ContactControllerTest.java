@@ -3,7 +3,11 @@ package com.catoritech.controller;
 import com.catoritech.entity.Contact;
 import com.catoritech.entity.dto.ContactDto;
 import com.catoritech.entity.requests.ContactRequest;
+import com.catoritech.exceptions.BusinessCanNotAccessContactException;
 import com.catoritech.exceptions.ContactAlreadyExistException;
+import com.catoritech.exceptions.ContactInvalidIdException;
+import com.catoritech.exceptions.IndividualUserCanNotAccessException;
+import com.catoritech.exceptions.UserNotFoundException;
 import com.catoritech.service.impl.ContactServiceImpl;
 import com.catoritech.util.ContactFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,16 +18,26 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import static com.catoritech.util.ContactConstants.EXCEPTION_MESSAGE;
 import static com.catoritech.util.ContactConstants.ID;
+import static com.catoritech.util.UserConstants.BUSINESS_CAN_NOT_ACCESS_CONTACT_EXCEPTION;
+import static com.catoritech.util.UserConstants.INDIVIDUAL_USER_CAN_ACCESS_OWN_INFO_EXCEPTION;
+import static com.catoritech.util.UserConstants.USERNAME;
+import static com.catoritech.util.UserConstants.USER_NOT_FOUND;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -98,5 +112,102 @@ public class ContactControllerTest {
 		assertEquals(HttpStatus.OK, response.getStatusCode());
 
 		assertEquals(contactDto, response.getBody());
+	}
+
+	@Test
+	public void testReadContactByIdNew_BusinessUserCanAccessContact() {
+		UserDetails userDetails = Mockito.mock(UserDetails.class);
+		when(userDetails.getUsername()).thenReturn(USERNAME);
+
+		Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null);
+		SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+		SecurityContextHolder.setContext(securityContext);
+		when(securityContext.getAuthentication()).thenReturn(authentication);
+		
+		when(contactService.readContactByIdNew(ID)).thenReturn(contactDto);
+
+		ResponseEntity<ContactDto> response = contactController.readContactByIdNew(ID);
+
+		assertEquals(HttpStatus.OK, response.getStatusCode());
+		assertEquals(contactDto, response.getBody());
+	}
+
+	@Test(expected = BusinessCanNotAccessContactException.class)
+	public void testReadContactByIdNew_BusinessUserCanNotAccessContact() {
+		UserDetails userDetails = Mockito.mock(UserDetails.class);
+		when(userDetails.getUsername()).thenReturn(USERNAME);
+
+		Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null);
+		SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+		SecurityContextHolder.setContext(securityContext);
+		when(securityContext.getAuthentication()).thenReturn(authentication);
+
+		when(contactService.readContactByIdNew(ID)).thenThrow(new BusinessCanNotAccessContactException(String.format(BUSINESS_CAN_NOT_ACCESS_CONTACT_EXCEPTION,USERNAME)));
+
+		contactController.readContactByIdNew(ID);
+	}
+
+
+	@Test
+	public void testReadContactByIdNew_IndividualUserCanAccessOwnContact() {
+		UserDetails userDetails = Mockito.mock(UserDetails.class);
+		when(userDetails.getUsername()).thenReturn(USERNAME);
+
+		Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null);
+		SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+		SecurityContextHolder.setContext(securityContext);
+		when(securityContext.getAuthentication()).thenReturn(authentication);
+
+		when(contactService.readContactByIdNew(ID)).thenReturn(contactDto);
+
+		ResponseEntity<ContactDto> response = contactController.readContactByIdNew(ID);
+
+		assertEquals(HttpStatus.OK, response.getStatusCode());
+		assertEquals(contactDto, response.getBody());
+	}
+
+	@Test(expected = IndividualUserCanNotAccessException.class)
+	public void testReadContactByIdNew_IndividualUserCanNotAccessOtherContact() {
+		UserDetails userDetails = Mockito.mock(UserDetails.class);
+		when(userDetails.getUsername()).thenReturn(USERNAME);
+
+		Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null);
+		SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+		SecurityContextHolder.setContext(securityContext);
+		when(securityContext.getAuthentication()).thenReturn(authentication);
+
+		when(contactService.readContactByIdNew(ID)).thenThrow(new IndividualUserCanNotAccessException(INDIVIDUAL_USER_CAN_ACCESS_OWN_INFO_EXCEPTION));
+
+		contactController.readContactByIdNew(ID);
+	}
+
+	@Test(expected = ContactInvalidIdException.class)
+	public void testReadContactByIdNew_InvalidContactId() {
+		UserDetails userDetails = Mockito.mock(UserDetails.class);
+		when(userDetails.getUsername()).thenReturn(USERNAME);
+
+		Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null);
+		SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+		SecurityContextHolder.setContext(securityContext);
+		when(securityContext.getAuthentication()).thenReturn(authentication);
+
+		when(contactService.readContactByIdNew(ID)).thenThrow(new ContactInvalidIdException());
+
+		contactController.readContactByIdNew(ID);
+	}
+
+	@Test(expected = UserNotFoundException.class)
+	public void testReadContactByIdNew_UserNotFound() {
+		UserDetails userDetails = Mockito.mock(UserDetails.class);
+		when(userDetails.getUsername()).thenReturn(USERNAME);
+
+		Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null);
+		SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+		SecurityContextHolder.setContext(securityContext);
+		when(securityContext.getAuthentication()).thenReturn(authentication);
+
+		when(contactService.readContactByIdNew(ID)).thenThrow(new UserNotFoundException(USER_NOT_FOUND));
+
+		contactController.readContactByIdNew(ID);
 	}
 }

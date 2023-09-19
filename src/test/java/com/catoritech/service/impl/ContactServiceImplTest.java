@@ -2,9 +2,12 @@ package com.catoritech.service.impl;
 
 import com.catoritech.entity.Contact;
 import com.catoritech.entity.dto.ContactDto;
+import com.catoritech.entity.enums.UserRole;
 import com.catoritech.entity.requests.ContactRequest;
+import com.catoritech.exceptions.BusinessCanNotAccessContactException;
 import com.catoritech.exceptions.ContactAlreadyExistException;
 import com.catoritech.exceptions.ContactInvalidIdException;
+import com.catoritech.exceptions.IndividualUserCanNotAccessException;
 import com.catoritech.exceptions.UserNotFoundException;
 import com.catoritech.repository.ContactRepository;
 import com.catoritech.util.ContactFactory;
@@ -21,6 +24,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -155,5 +159,76 @@ public class ContactServiceImplTest {
 		when(contactRepository.findByUserId(1L)).thenReturn(Optional.empty());
 
 		assertThrows(EntityNotFoundException.class, () -> contactService.readContactInformation());
+	}
+
+	@Test(expected = BusinessCanNotAccessContactException.class)
+	public void testReadContactByIdNew_BusinessUserCanNotAccessContact() {
+		User businessUser = user;
+
+		UserDetails userDetails = Mockito.mock(UserDetails.class);
+		when(userDetails.getUsername()).thenReturn(USERNAME);
+
+		Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null);
+		SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+		SecurityContextHolder.setContext(securityContext);
+		when(securityContext.getAuthentication()).thenReturn(authentication);
+
+		when(userRepository.findByUsername(USERNAME)).thenReturn(Optional.of(businessUser));
+
+		when(contactRepository.findById(ID)).thenReturn(Optional.of(contact));
+
+		contactService.readContactByIdNew(ID);
+	}
+
+	@Test(expected = IndividualUserCanNotAccessException.class)
+	public void testReadContactByIdNew_IndividualUserCanNotAccessOtherContact() {
+		User individualUser = user;
+		individualUser.setUserRole(UserRole.INDIVIDUAL);
+
+		UserDetails userDetails = Mockito.mock(UserDetails.class);
+		when(userDetails.getUsername()).thenReturn(USERNAME);
+
+		Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null);
+		SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+		SecurityContextHolder.setContext(securityContext);
+		when(securityContext.getAuthentication()).thenReturn(authentication);
+
+		when(userRepository.findByUsername(USERNAME)).thenReturn(Optional.of(individualUser));
+
+		when(contactRepository.findById(ID)).thenReturn(Optional.of(contact));
+
+		contactService.readContactByIdNew(ID);
+	}
+
+	@Test(expected = ContactInvalidIdException.class)
+	public void testReadContactByIdNew_InvalidContactId() {
+		UserDetails userDetails = Mockito.mock(UserDetails.class);
+		when(userDetails.getUsername()).thenReturn(USERNAME);
+
+		Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null);
+		SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+		SecurityContextHolder.setContext(securityContext);
+		when(securityContext.getAuthentication()).thenReturn(authentication);
+
+		when(userRepository.findByUsername(USERNAME)).thenReturn(Optional.of(new User()));
+
+		when(contactRepository.findById(ID)).thenReturn(Optional.empty());
+
+		contactService.readContactByIdNew(ID);
+	}
+
+	@Test(expected = UserNotFoundException.class)
+	public void testReadContactByIdNew_UserNotFound() {
+		UserDetails userDetails = Mockito.mock(UserDetails.class);
+		when(userDetails.getUsername()).thenReturn(USERNAME);
+
+		Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null);
+		SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+		SecurityContextHolder.setContext(securityContext);
+		when(securityContext.getAuthentication()).thenReturn(authentication);
+
+		when(userRepository.findByUsername(USERNAME)).thenReturn(Optional.empty());
+
+		contactService.readContactByIdNew(ID);
 	}
 }
