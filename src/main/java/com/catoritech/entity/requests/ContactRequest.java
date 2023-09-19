@@ -12,6 +12,7 @@ public class ContactRequest {
 	private String VAT;
 
 	private Long userId;
+	private Long businessId;;
 
 	public ContactRequest() {
 	}
@@ -23,6 +24,17 @@ public class ContactRequest {
 		this.phone = phone;
 		this.VAT = VAT;
 		this.userId = userId;
+	}
+
+	public ContactRequest(
+		String firstName, String lastName, String address, String phone, String VAT, Long userId, Long businessId) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.address = address;
+		this.phone = phone;
+		this.VAT = VAT;
+		this.userId = userId;
+		this.businessId = businessId;
 	}
 
 	public String getFirstName() {
