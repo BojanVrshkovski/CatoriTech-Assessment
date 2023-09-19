@@ -123,7 +123,7 @@ public class ContactControllerTest {
 		SecurityContext securityContext = Mockito.mock(SecurityContext.class);
 		SecurityContextHolder.setContext(securityContext);
 		when(securityContext.getAuthentication()).thenReturn(authentication);
-		
+
 		when(contactService.readContactByIdNew(ID)).thenReturn(contactDto);
 
 		ResponseEntity<ContactDto> response = contactController.readContactByIdNew(ID);
