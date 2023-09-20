@@ -84,7 +84,8 @@ INSERT INTO contacts (first_name, last_name, address, phone, VAT, user_id) VALUE
 INSERT INTO contacts (first_name, last_name, address, phone, VAT, user_id, business_id) VALUES
 ('Business Contact BV', 'Lastname', 'Business Address 1', '1214567890', 'VAT123', 21, 1);
 
-
+INSERT INTO users (username, password, user_role, business_id) VALUES
+    ('Bojan', '$2a$04$m1UxvY0tlAXaChnYK0KGv.PlY3gFKjdYyV0zydq6q.QJ4SgSq2BqK', 'BUSINESS', 8);
 
 
 
