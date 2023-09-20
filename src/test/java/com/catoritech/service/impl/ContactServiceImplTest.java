@@ -231,4 +231,38 @@ public class ContactServiceImplTest {
 
 		contactService.readContactByIdNew(ID);
 	}
+
+
+	@Test
+	public void testDeleteContactById_Success() {
+		when(userRepository.findByUsername(Mockito.any())).thenReturn(Optional.of(new User()));
+
+		Contact contact = new Contact();
+		when(contactRepository.findById(ID)).thenReturn(Optional.of(contact));
+
+		contactService.deleteContactById(ID);
+
+		Mockito.verify(contactRepository).delete(contact);
+	}
+
+	@Test
+	public void testDeleteContactById_ContactNotFound() {
+		when(userRepository.findByUsername(Mockito.any())).thenReturn(Optional.of(new User()));
+
+		when(contactRepository.findById(ID)).thenReturn(Optional.empty());
+
+		SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+		SecurityContextHolder.setContext(securityContext);
+		Authentication authentication = Mockito.mock(Authentication.class);
+		UserDetails userDetails = Mockito.mock(UserDetails.class);
+		when(userDetails.getUsername()).thenReturn(USERNAME);
+		when(authentication.getPrincipal()).thenReturn(userDetails);
+		when(securityContext.getAuthentication()).thenReturn(authentication);
+
+		ContactInvalidIdException exception = assertThrows(ContactInvalidIdException.class, () -> {
+			contactService.deleteContactById(ID);
+		});
+
+		assertEquals("Invalid contact ID", exception.getMessage());
+	}
 }
