@@ -210,4 +210,40 @@ public class ContactControllerTest {
 
 		contactController.readContactByIdNew(ID);
 	}
+
+	@Test
+	public void testDeleteContactById_Success() throws Exception {
+		UserDetails userDetails = Mockito.mock(UserDetails.class);
+		when(userDetails.getUsername()).thenReturn(USERNAME);
+
+		Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null);
+		SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+		SecurityContextHolder.setContext(securityContext);
+		when(securityContext.getAuthentication()).thenReturn(authentication);
+		
+		when(contactService.deleteContactById(ID)).thenReturn(true);
+
+		mockMvc.perform(delete("/contact/" + ID))
+		       .andExpect(status().isNoContent());
+
+		Mockito.verify(contactService).deleteContactById(ID);
+	}
+
+	@Test
+	public void testDeleteContactById_Failure() throws Exception {
+		UserDetails userDetails = Mockito.mock(UserDetails.class);
+		when(userDetails.getUsername()).thenReturn(USERNAME);
+
+		Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null);
+		SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+		SecurityContextHolder.setContext(securityContext);
+		when(securityContext.getAuthentication()).thenReturn(authentication);
+
+		when(contactService.deleteContactById(ID)).thenThrow(new ContactInvalidIdException());
+
+		mockMvc.perform(delete("/contact/" + ID))
+		       .andExpect(status().isNotFound());
+
+		Mockito.verify(contactService).deleteContactById(ID);
+	}
 }
