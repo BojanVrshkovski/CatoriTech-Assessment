@@ -6,6 +6,7 @@ import com.catoritech.entity.requests.ContactRequest;
 import com.catoritech.exceptions.BusinessCanNotAccessContactException;
 import com.catoritech.exceptions.ContactAlreadyExistException;
 import com.catoritech.exceptions.ContactInvalidIdException;
+import com.catoritech.exceptions.EmptyContactListException;
 import com.catoritech.exceptions.IndividualUserCanNotAccessException;
 import com.catoritech.exceptions.UserNotFoundException;
 import com.catoritech.service.impl.ContactServiceImpl;
@@ -32,6 +33,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import java.util.Arrays;
+import java.util.List;
+
 import static com.catoritech.util.ContactConstants.EXCEPTION_MESSAGE;
 import static com.catoritech.util.ContactConstants.ID;
 import static com.catoritech.util.UserConstants.BUSINESS_CAN_NOT_ACCESS_CONTACT_EXCEPTION;
@@ -39,6 +44,8 @@ import static com.catoritech.util.UserConstants.INDIVIDUAL_USER_CAN_ACCESS_OWN_I
 import static com.catoritech.util.UserConstants.USERNAME;
 import static com.catoritech.util.UserConstants.USER_NOT_FOUND;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
@@ -229,5 +236,27 @@ public class ContactControllerTest {
 		       .andExpect(status().isNoContent());
 
 		Mockito.verify(contactService).deleteContactById(ID);
+	}
+
+	@Test
+	public void testReadAllContactsSuccess() {
+		List<ContactDto> expectedContacts = Arrays.asList(
+			contactDto,
+			contactDto
+		);
+
+		when(contactService.readAllContacts()).thenReturn(expectedContacts);
+
+		List<ContactDto> result = contactController.readAllContacts();
+
+		assertNotNull(result);
+		assertEquals(expectedContacts.size(), result.size());
+	}
+
+	@Test
+	public void testReadAllContactsFailure() {
+		when(contactService.readAllContacts()).thenThrow(EmptyContactListException.class);
+
+		assertThrows(EmptyContactListException.class, () -> contactController.readAllContacts());
 	}
 }
