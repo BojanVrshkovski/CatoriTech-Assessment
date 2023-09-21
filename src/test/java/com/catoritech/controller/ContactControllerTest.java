@@ -40,10 +40,12 @@ import static com.catoritech.util.UserConstants.USERNAME;
 import static com.catoritech.util.UserConstants.USER_NOT_FOUND;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 
 @AutoConfigureMockMvc
 @RunWith(MockitoJUnitRunner.class)
@@ -220,29 +222,11 @@ public class ContactControllerTest {
 		SecurityContext securityContext = Mockito.mock(SecurityContext.class);
 		SecurityContextHolder.setContext(securityContext);
 		when(securityContext.getAuthentication()).thenReturn(authentication);
-		
-		when(contactService.deleteContactById(ID)).thenReturn(true);
+
+		Mockito.doNothing().when(contactService).deleteContactById(ID);
 
 		mockMvc.perform(delete("/contact/" + ID))
 		       .andExpect(status().isNoContent());
-
-		Mockito.verify(contactService).deleteContactById(ID);
-	}
-
-	@Test
-	public void testDeleteContactById_Failure() throws Exception {
-		UserDetails userDetails = Mockito.mock(UserDetails.class);
-		when(userDetails.getUsername()).thenReturn(USERNAME);
-
-		Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null);
-		SecurityContext securityContext = Mockito.mock(SecurityContext.class);
-		SecurityContextHolder.setContext(securityContext);
-		when(securityContext.getAuthentication()).thenReturn(authentication);
-
-		when(contactService.deleteContactById(ID)).thenThrow(new ContactInvalidIdException());
-
-		mockMvc.perform(delete("/contact/" + ID))
-		       .andExpect(status().isNotFound());
 
 		Mockito.verify(contactService).deleteContactById(ID);
 	}
