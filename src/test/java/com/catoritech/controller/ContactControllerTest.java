@@ -126,12 +126,10 @@ public class ContactControllerTest {
 	@Test
 	public void testReadContactByIdNew_BusinessUserCanAccessContact() {
 		UserDetails userDetails = Mockito.mock(UserDetails.class);
-		when(userDetails.getUsername()).thenReturn(USERNAME);
 
 		Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null);
 		SecurityContext securityContext = Mockito.mock(SecurityContext.class);
 		SecurityContextHolder.setContext(securityContext);
-		when(securityContext.getAuthentication()).thenReturn(authentication);
 
 		when(contactService.readContactByIdNew(ID)).thenReturn(contactDto);
 
@@ -144,14 +142,12 @@ public class ContactControllerTest {
 	@Test(expected = BusinessCanNotAccessContactException.class)
 	public void testReadContactByIdNew_BusinessUserCanNotAccessContact() {
 		UserDetails userDetails = Mockito.mock(UserDetails.class);
-		when(userDetails.getUsername()).thenReturn(USERNAME);
 
 		Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null);
 		SecurityContext securityContext = Mockito.mock(SecurityContext.class);
 		SecurityContextHolder.setContext(securityContext);
-		when(securityContext.getAuthentication()).thenReturn(authentication);
 
-		when(contactService.readContactByIdNew(ID)).thenThrow(new BusinessCanNotAccessContactException(String.format(BUSINESS_CAN_NOT_ACCESS_CONTACT_EXCEPTION,USERNAME)));
+		when(contactService.readContactByIdNew(ID)).thenThrow(new BusinessCanNotAccessContactException(String.format(BUSINESS_CAN_NOT_ACCESS_CONTACT_EXCEPTION, USERNAME)));
 
 		contactController.readContactByIdNew(ID);
 	}
@@ -160,12 +156,10 @@ public class ContactControllerTest {
 	@Test
 	public void testReadContactByIdNew_IndividualUserCanAccessOwnContact() {
 		UserDetails userDetails = Mockito.mock(UserDetails.class);
-		when(userDetails.getUsername()).thenReturn(USERNAME);
 
 		Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null);
 		SecurityContext securityContext = Mockito.mock(SecurityContext.class);
 		SecurityContextHolder.setContext(securityContext);
-		when(securityContext.getAuthentication()).thenReturn(authentication);
 
 		when(contactService.readContactByIdNew(ID)).thenReturn(contactDto);
 
@@ -178,12 +172,10 @@ public class ContactControllerTest {
 	@Test(expected = IndividualUserCanNotAccessException.class)
 	public void testReadContactByIdNew_IndividualUserCanNotAccessOtherContact() {
 		UserDetails userDetails = Mockito.mock(UserDetails.class);
-		when(userDetails.getUsername()).thenReturn(USERNAME);
 
 		Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null);
 		SecurityContext securityContext = Mockito.mock(SecurityContext.class);
 		SecurityContextHolder.setContext(securityContext);
-		when(securityContext.getAuthentication()).thenReturn(authentication);
 
 		when(contactService.readContactByIdNew(ID)).thenThrow(new IndividualUserCanNotAccessException(INDIVIDUAL_USER_CAN_ACCESS_OWN_INFO_EXCEPTION));
 
@@ -193,12 +185,10 @@ public class ContactControllerTest {
 	@Test(expected = ContactInvalidIdException.class)
 	public void testReadContactByIdNew_InvalidContactId() {
 		UserDetails userDetails = Mockito.mock(UserDetails.class);
-		when(userDetails.getUsername()).thenReturn(USERNAME);
 
 		Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null);
 		SecurityContext securityContext = Mockito.mock(SecurityContext.class);
 		SecurityContextHolder.setContext(securityContext);
-		when(securityContext.getAuthentication()).thenReturn(authentication);
 
 		when(contactService.readContactByIdNew(ID)).thenThrow(new ContactInvalidIdException());
 
@@ -208,12 +198,10 @@ public class ContactControllerTest {
 	@Test(expected = UserNotFoundException.class)
 	public void testReadContactByIdNew_UserNotFound() {
 		UserDetails userDetails = Mockito.mock(UserDetails.class);
-		when(userDetails.getUsername()).thenReturn(USERNAME);
 
 		Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null);
 		SecurityContext securityContext = Mockito.mock(SecurityContext.class);
 		SecurityContextHolder.setContext(securityContext);
-		when(securityContext.getAuthentication()).thenReturn(authentication);
 
 		when(contactService.readContactByIdNew(ID)).thenThrow(new UserNotFoundException(USER_NOT_FOUND));
 
@@ -223,12 +211,10 @@ public class ContactControllerTest {
 	@Test
 	public void testDeleteContactById_Success() throws Exception {
 		UserDetails userDetails = Mockito.mock(UserDetails.class);
-		when(userDetails.getUsername()).thenReturn(USERNAME);
 
 		Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null);
 		SecurityContext securityContext = Mockito.mock(SecurityContext.class);
 		SecurityContextHolder.setContext(securityContext);
-		when(securityContext.getAuthentication()).thenReturn(authentication);
 
 		Mockito.doNothing().when(contactService).deleteContactById(ID);
 

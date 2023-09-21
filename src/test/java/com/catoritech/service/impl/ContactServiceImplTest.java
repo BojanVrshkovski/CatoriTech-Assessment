@@ -290,19 +290,15 @@ public class ContactServiceImplTest {
 		assertEquals(expectedContactDtos, actualContactDtos);
 	}
 
-
 	@Test
 	public void testReadAllContacts_Failure() {
 		MockitoAnnotations.openMocks(this);
-
-		List<Contact> mockContacts = new ArrayList<>();
-
-		when(contactRepository.findAll()).thenReturn(mockContacts);
 
 		assertThrows(EmptyContactListException.class, () -> {
 			contactService.readAllContacts();
 		});
 	}
+
 	@Test
 	public void testSearchContactsNoResults() {
 		String searchTerm = FIRST_NAME;
