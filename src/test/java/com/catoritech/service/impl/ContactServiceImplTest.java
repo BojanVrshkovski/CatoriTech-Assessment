@@ -35,7 +35,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.catoritech.util.ContactConstants.ADDRESS;
+import static com.catoritech.util.ContactConstants.BUSINESS_ID;
+import static com.catoritech.util.ContactConstants.FIRST_NAME;
 import static com.catoritech.util.ContactConstants.ID;
+import static com.catoritech.util.ContactConstants.LAST_NAME;
+import static com.catoritech.util.ContactConstants.PHONE;
+import static com.catoritech.util.ContactConstants.USER_ID;
+import static com.catoritech.util.ContactConstants.VAT;
 import static com.catoritech.util.UserConstants.USERNAME;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -303,5 +310,17 @@ public class ContactServiceImplTest {
 		assertThrows(EmptyContactListException.class, () -> {
 			contactService.readAllContacts();
 		});
+	}
+	@Test
+	public void testSearchContactsNoResults() {
+		String searchTerm = FIRST_NAME;
+
+		when(contactRepository.findByFirstNameContainingOrPhoneContaining(searchTerm))
+			.thenReturn(new ArrayList<>());
+
+		List<ContactDto> contactDtos = contactService.searchContacts(searchTerm);
+
+		assertNotNull(contactDtos);
+		assertTrue(contactDtos.isEmpty());
 	}
 }

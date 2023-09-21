@@ -37,14 +37,14 @@ public class SecurityConfig {
 			new AntPathRequestMatcher("/contact/profile"),
 			new AntPathRequestMatcher("/contacts/{id}"),
 			new AntPathRequestMatcher("/contact/all"),
-			new AntPathRequestMatcher("/contact/update/{id}")
+			new AntPathRequestMatcher("/contact/update/{id}"),
+			new AntPathRequestMatcher("/contact/search")
 
 		);
 		RequestMatcher permitAllMatchers =  new OrRequestMatcher(
 			new AntPathRequestMatcher("/addUser"),
 			new AntPathRequestMatcher("/public"),
-			new AntPathRequestMatcher("/register"),
-			new AntPathRequestMatcher("/contact/search")
+			new AntPathRequestMatcher("/register")
 		);
 
 		return http.csrf(AbstractHttpConfigurer::disable)

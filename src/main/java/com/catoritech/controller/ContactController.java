@@ -90,6 +90,7 @@ public class ContactController {
 	}
 
 	@GetMapping("/contact/search")
+	@PreAuthorize("hasAnyAuthority('BUSINESS','INDIVIDUAL')")
 	public ResponseEntity<List<ContactDto>> searchContacts(@RequestParam("searchTerm") String searchTerm) {
 		List<ContactDto> foundContacts = contactService.searchContacts(searchTerm);
 
