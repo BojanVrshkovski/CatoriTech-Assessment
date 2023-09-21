@@ -133,7 +133,7 @@ public class ContactServiceImpl implements ContactService {
 		}
 	}
 
-	private void userDetails(Long id) {
+	public void userDetails(Long id) {
 		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
 		String username = userDetails.getUsername();

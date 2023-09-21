@@ -34,6 +34,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 import static com.catoritech.util.ContactConstants.ID;
 import static com.catoritech.util.UserConstants.USERNAME;
 import static org.junit.jupiter.api.Assertions.*;
@@ -41,6 +42,7 @@ import static org.mockito.Mockito.*;
 import com.catoritech.entity.User;
 import com.catoritech.repository.UserRepository;
 import org.springframework.security.core.Authentication;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
