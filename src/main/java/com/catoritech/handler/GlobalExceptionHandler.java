@@ -2,9 +2,13 @@ package com.catoritech.handler;
 
 import com.catoritech.exceptions.BusinessCanNotAccessContactException;
 import com.catoritech.exceptions.ContactAlreadyExistException;
+import com.catoritech.exceptions.ContactForUserNotFoundException;
+import com.catoritech.exceptions.ContactInvalidIdException;
+import com.catoritech.exceptions.EmptyContactListException;
 import com.catoritech.exceptions.IndividualUserCanNotAccessException;
 import com.catoritech.exceptions.NoRowsUpdatedException;
 import com.catoritech.exceptions.UserAlreadyExistException;
+import com.catoritech.exceptions.UserNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -50,6 +54,30 @@ public class GlobalExceptionHandler {
 	}
 	@ExceptionHandler(NoRowsUpdatedException.class)
 	public ResponseEntity<String> handleNoRowsUpdatedException(NoRowsUpdatedException exception) {
+		log.error(CAUGHT_EXCEPTION_MESSAGE, exception);
+		String error = exception.getMessage();
+		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+	}
+	@ExceptionHandler(ContactForUserNotFoundException.class)
+	public ResponseEntity<String> handleContactForUserNotFoundExceptionException(ContactForUserNotFoundException exception) {
+		log.error(CAUGHT_EXCEPTION_MESSAGE, exception);
+		String error = exception.getMessage();
+		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+	}
+	@ExceptionHandler(ContactInvalidIdException.class)
+	public ResponseEntity<String> handleContactInvalidIdExceptionException(ContactInvalidIdException exception) {
+		log.error(CAUGHT_EXCEPTION_MESSAGE, exception);
+		String error = exception.getMessage();
+		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+	}
+	@ExceptionHandler(EmptyContactListException.class)
+	public ResponseEntity<String> handleEmptyContactListExceptionException(EmptyContactListException exception) {
+		log.error(CAUGHT_EXCEPTION_MESSAGE, exception);
+		String error = exception.getMessage();
+		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+	}
+	@ExceptionHandler(UserNotFoundException.class)
+	public ResponseEntity<String> handleUserNotFoundExceptionException(UserNotFoundException exception) {
 		log.error(CAUGHT_EXCEPTION_MESSAGE, exception);
 		String error = exception.getMessage();
 		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
