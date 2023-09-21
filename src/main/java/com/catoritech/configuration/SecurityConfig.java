@@ -44,7 +44,7 @@ public class SecurityConfig {
 			new AntPathRequestMatcher("/addUser"),
 			new AntPathRequestMatcher("/public"),
 			new AntPathRequestMatcher("/register"),
-		  new AntPathRequestMatcher("/contacts")
+			new AntPathRequestMatcher("/contact/search")
 		);
 
 		return http.csrf(AbstractHttpConfigurer::disable)

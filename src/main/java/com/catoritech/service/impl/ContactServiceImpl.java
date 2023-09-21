@@ -135,7 +135,7 @@ public class ContactServiceImpl implements ContactService {
 
 	@Override
 	public List<ContactDto> searchContacts(String searchTerm) {
-		List<Contact> foundContacts = contactRepository.findByFirstNameContainingOrPhoneNumberContaining(searchTerm, searchTerm, searchTerm);
+		List<Contact> foundContacts = contactRepository.findByFirstNameContainingOrPhoneContaining(searchTerm);
 
 		List<ContactDto> contactDtos = foundContacts.stream()
 		                                            .map(contact -> modelMapper.map(contact, ContactDto.class))

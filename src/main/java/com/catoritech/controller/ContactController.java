@@ -89,7 +89,7 @@ public class ContactController {
 		return ResponseEntity.noContent().build();
 	}
 
-	@GetMapping("/contacts")
+	@GetMapping("/contact/search")
 	public ResponseEntity<List<ContactDto>> searchContacts(@RequestParam("searchTerm") String searchTerm) {
 		List<ContactDto> foundContacts = contactService.searchContacts(searchTerm);
 

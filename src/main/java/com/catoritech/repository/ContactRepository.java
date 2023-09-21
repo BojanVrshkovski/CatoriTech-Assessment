@@ -26,5 +26,6 @@ public interface ContactRepository extends JpaRepository<Contact,Long> {
 		@Param("VAT") String VAT
 	);
 
-	List<Contact> findByFirstNameContainingOrPhoneNumberContaining(String firstName, String lastName, String phoneNumber);
+	@Query("SELECT c FROM Contact c WHERE c.firstName LIKE %:searchTerm% OR c.phone LIKE %:searchTerm%")
+	List<Contact> findByFirstNameContainingOrPhoneContaining(@Param("searchTerm") String searchTerm);
 }
