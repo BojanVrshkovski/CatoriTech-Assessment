@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -24,4 +25,6 @@ public interface ContactRepository extends JpaRepository<Contact,Long> {
 		@Param("phone") String phone,
 		@Param("VAT") String VAT
 	);
+
+	List<Contact> findByFirstNameContainingOrPhoneNumberContaining(String firstName, String lastName, String phoneNumber);
 }

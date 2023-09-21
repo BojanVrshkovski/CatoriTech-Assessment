@@ -133,7 +133,19 @@ public class ContactServiceImpl implements ContactService {
 		}
 	}
 
-	public void userDetails(Long id) {
+	@Override
+	public List<ContactDto> searchContacts(String searchTerm) {
+		List<Contact> foundContacts = contactRepository.findByFirstNameContainingOrPhoneNumberContaining(searchTerm, searchTerm, searchTerm);
+
+		List<ContactDto> contactDtos = foundContacts.stream()
+		                                            .map(contact -> modelMapper.map(contact, ContactDto.class))
+		                                            .collect(Collectors.toList());
+
+		return contactDtos;
+	}
+
+
+	private void userDetails(Long id) {
 		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
 		String username = userDetails.getUsername();
