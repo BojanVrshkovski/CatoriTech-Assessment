@@ -31,7 +31,7 @@ public class Contact {
 	@Column(name = "VAT", nullable = false)
 	private String VAT;
 
-	@JoinColumn(name = "user_id", referencedColumnName = "id")
+	@JoinColumn(name = "user_id", referencedColumnName = "id",nullable = false)
 	private Long userId;
 
 	@JoinColumn(name = "business_id", referencedColumnName = "id")
