@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 public class ContactController {
@@ -68,5 +69,11 @@ public class ContactController {
 		contactService.deleteContactById(id);
 
 		return ResponseEntity.noContent().build();
+	}
+
+	@GetMapping("/contact/all")
+	@PreAuthorize("hasAnyAuthority('BUSINESS','INDIVIDUAL')")
+	public List<ContactDto> readAllContacts(){
+		return contactService.readAllContacts();
 	}
 }

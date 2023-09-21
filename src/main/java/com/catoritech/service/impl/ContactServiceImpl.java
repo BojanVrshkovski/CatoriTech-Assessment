@@ -109,7 +109,7 @@ public class ContactServiceImpl implements ContactService {
 			log.error(String.format(NO_CONTACTS_FOUND));
 			throw new EmptyContactListException(NO_CONTACTS_FOUND);
 		}
-		
+
 		return contacts.stream()
 		           .map(contact -> modelMapper.map(contact, ContactDto.class))
 		           .collect(Collectors.toList());
