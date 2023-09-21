@@ -49,4 +49,12 @@ public class UserRequest {
 	public void setUserRole(UserRole userRole) {
 		this.userRole = userRole;
 	}
+
+	public Long getBusinessId() {
+		return businessId;
+	}
+
+	public void setBusinessId(Long businessId) {
+		this.businessId = businessId;
+	}
 }

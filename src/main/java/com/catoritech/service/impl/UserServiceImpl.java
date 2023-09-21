@@ -33,6 +33,7 @@ public class UserServiceImpl implements UserService {
 			user.setUsername(userRequest.getUsername());
 			user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
 			user.setUserRole(userRequest.getUserRole());
+			user.setBusinessId(userRequest.getBusinessId());
 			user = userRepository.save(user);
 			log.info(String.format(SUCCESSFULLY_REGISTERED_USER_MESSAGE,userRequest.getUsername()));
 		}catch (DataIntegrityViolationException e) {
