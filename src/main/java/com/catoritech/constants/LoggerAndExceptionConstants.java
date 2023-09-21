@@ -11,4 +11,5 @@ public final class LoggerAndExceptionConstants {
 	public static String READ_CONTACT_MESSAGE = "Contact with id: %d is trying to fetch his information";
 	public static String BUSINESS_CAN_NOT_ACCESS_CONTACT = "Business user with username %s does not have access to this contact";
 	public static String INDIVIDUAL_USER_CAN_ACCESS_OWN_INFO = "Individual user can only access their own contact information";
+	public static String NO_CONTACTS_FOUND = "No contacts found";
 }

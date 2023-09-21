@@ -8,6 +8,7 @@ import com.catoritech.entity.requests.ContactRequest;
 import com.catoritech.exceptions.BusinessCanNotAccessContactException;
 import com.catoritech.exceptions.ContactAlreadyExistException;
 import com.catoritech.exceptions.ContactInvalidIdException;
+import com.catoritech.exceptions.EmptyContactListException;
 import com.catoritech.exceptions.IndividualUserCanNotAccessException;
 import com.catoritech.exceptions.UserNotFoundException;
 import com.catoritech.repository.ContactRepository;
@@ -23,6 +24,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static com.catoritech.constants.LoggerAndExceptionConstants.ALREADY_EXIST_CONTACT_DB_MESSAGE;
 import static com.catoritech.constants.LoggerAndExceptionConstants.BUSINESS_CAN_NOT_ACCESS_CONTACT;
 import static com.catoritech.constants.LoggerAndExceptionConstants.CONTACT_NOT_FOUND_FOR_USER_MESSAGE;
@@ -30,7 +34,7 @@ import static com.catoritech.constants.LoggerAndExceptionConstants.INDIVIDUAL_US
 import static com.catoritech.constants.LoggerAndExceptionConstants.READ_CONTACT_MESSAGE;
 import static com.catoritech.constants.LoggerAndExceptionConstants.SUCCESSFULLY_ADDED_CONTACT_MESSAGE;
 import static com.catoritech.constants.LoggerAndExceptionConstants.USER_NOT_FOUND_MESSAGE;
-
+import static com.catoritech.constants.LoggerAndExceptionConstants.NO_CONTACTS_FOUND;
 @Service
 public class ContactServiceImpl implements ContactService {
 	private static final Logger log = LoggerFactory.getLogger(ContactServiceImpl.class);
@@ -96,6 +100,19 @@ public class ContactServiceImpl implements ContactService {
 		Contact contact = contactRepository.findById(id).orElseThrow(ContactInvalidIdException::new);
 
 		contactRepository.delete(contact);
+	}
+
+	@Override
+	public List<ContactDto> readAllContacts() {
+		List<Contact> contacts = contactRepository.findAll();
+		if (contacts.isEmpty()) {
+			log.error(String.format(NO_CONTACTS_FOUND));
+			throw new EmptyContactListException(NO_CONTACTS_FOUND);
+		}
+		
+		return contacts.stream()
+		           .map(contact -> modelMapper.map(contact, ContactDto.class))
+		           .collect(Collectors.toList());
 	}
 
 	private void userDetails(Long id) {
