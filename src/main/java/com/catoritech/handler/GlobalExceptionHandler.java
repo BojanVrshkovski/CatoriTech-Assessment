@@ -3,6 +3,7 @@ package com.catoritech.handler;
 import com.catoritech.exceptions.BusinessCanNotAccessContactException;
 import com.catoritech.exceptions.ContactAlreadyExistException;
 import com.catoritech.exceptions.IndividualUserCanNotAccessException;
+import com.catoritech.exceptions.NoRowsUpdatedException;
 import com.catoritech.exceptions.UserAlreadyExistException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,6 +44,12 @@ public class GlobalExceptionHandler {
 	}
 	@ExceptionHandler(IndividualUserCanNotAccessException.class)
 	public ResponseEntity<String> handleIndividualCanNotAccessContactException(IndividualUserCanNotAccessException exception) {
+		log.error(CAUGHT_EXCEPTION_MESSAGE, exception);
+		String error = exception.getMessage();
+		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+	}
+	@ExceptionHandler(NoRowsUpdatedException.class)
+	public ResponseEntity<String> handleNoRowsUpdatedException(NoRowsUpdatedException exception) {
 		log.error(CAUGHT_EXCEPTION_MESSAGE, exception);
 		String error = exception.getMessage();
 		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
