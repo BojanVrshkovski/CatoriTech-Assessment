@@ -7,12 +7,14 @@ import com.catoritech.entity.requests.ContactRequest;
 import com.catoritech.exceptions.BusinessCanNotAccessContactException;
 import com.catoritech.exceptions.ContactAlreadyExistException;
 import com.catoritech.exceptions.ContactInvalidIdException;
+import com.catoritech.exceptions.EmptyContactListException;
 import com.catoritech.exceptions.IndividualUserCanNotAccessException;
 import com.catoritech.exceptions.UserNotFoundException;
 import com.catoritech.repository.ContactRepository;
 import com.catoritech.util.ContactFactory;
 import com.catoritech.util.UserFactory;
 import jakarta.persistence.EntityNotFoundException;
+import org.mockito.MockitoAnnotations;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
@@ -28,6 +30,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import static com.catoritech.util.ContactConstants.ID;
 import static com.catoritech.util.UserConstants.USERNAME;
@@ -264,5 +269,37 @@ public class ContactServiceImplTest {
 		});
 
 		assertEquals("Invalid contact ID", exception.getMessage());
+	}
+
+
+	@Test
+	public void testReadAllContactsSuccess() {
+		List<Contact> mockContacts = List.of(contact, contact);
+		when(contactRepository.findAll()).thenReturn(mockContacts);
+
+		List<ContactDto> expectedContactDtos = List.of(contactDto, contactDto);
+
+		when(modelMapper.map(contact, ContactDto.class))
+			.thenReturn(expectedContactDtos.get(0))
+			.thenReturn(expectedContactDtos.get(1));
+
+		List<ContactDto> actualContactDtos = contactService.readAllContacts();
+
+		assertEquals(expectedContactDtos.size(), actualContactDtos.size());
+		assertEquals(expectedContactDtos, actualContactDtos);
+	}
+
+
+	@Test
+	public void testReadAllContacts_Failure() {
+		MockitoAnnotations.openMocks(this);
+
+		List<Contact> mockContacts = new ArrayList<>();
+
+		when(contactRepository.findAll()).thenReturn(mockContacts);
+
+		assertThrows(EmptyContactListException.class, () -> {
+			contactService.readAllContacts();
+		});
 	}
 }
