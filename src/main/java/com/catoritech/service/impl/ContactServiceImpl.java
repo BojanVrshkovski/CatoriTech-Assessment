@@ -115,6 +115,11 @@ public class ContactServiceImpl implements ContactService {
 		           .collect(Collectors.toList());
 	}
 
+	@Override
+	public void updateContactById(long id, ContactRequest contactRequest) {
+		
+	}
+
 	private void userDetails(Long id) {
 		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
