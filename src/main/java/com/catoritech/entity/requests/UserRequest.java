@@ -8,6 +8,7 @@ public class UserRequest {
 	private String password;
 
 	private UserRole userRole;
+	private Long businessId;
 
 	public UserRequest() {
 	}
@@ -16,6 +17,13 @@ public class UserRequest {
 		this.username = username;
 		this.password = password;
 		this.userRole = userRole;
+	}
+
+	public UserRequest(String username, String password, UserRole userRole, Long businessId) {
+		this.username = username;
+		this.password = password;
+		this.userRole = userRole;
+		this.businessId = businessId;
 	}
 
 	public String getUsername() {
