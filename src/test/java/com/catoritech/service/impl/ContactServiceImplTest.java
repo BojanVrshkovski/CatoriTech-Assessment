@@ -35,14 +35,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.catoritech.util.ContactConstants.ADDRESS;
-import static com.catoritech.util.ContactConstants.BUSINESS_ID;
 import static com.catoritech.util.ContactConstants.FIRST_NAME;
 import static com.catoritech.util.ContactConstants.ID;
-import static com.catoritech.util.ContactConstants.LAST_NAME;
-import static com.catoritech.util.ContactConstants.PHONE;
-import static com.catoritech.util.ContactConstants.USER_ID;
-import static com.catoritech.util.ContactConstants.VAT;
 import static com.catoritech.util.UserConstants.USERNAME;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -83,8 +77,7 @@ public class ContactServiceImplTest {
 
 	@Test
 	public void testCreateContact_Success() {
-		when(modelMapper.map(contactRequest, Contact.class)).thenReturn(contact);
-		when(contactRepository.save(contact)).thenReturn(contact);
+		when(contactRepository.save(any(Contact.class))).thenReturn(contact);
 
 		Long createdContactId = contactService.createContact(contactRequest);
 
@@ -94,8 +87,7 @@ public class ContactServiceImplTest {
 
 	@Test
 	public void testCreateContact_DuplicatePhone() {
-		when(modelMapper.map(contactRequest, Contact.class)).thenReturn(contact);
-		when(contactRepository.save(contact)).thenThrow(DataIntegrityViolationException.class);
+		when(contactRepository.save(any(Contact.class))).thenThrow(DataIntegrityViolationException.class);
 
 		assertThrows(ContactAlreadyExistException.class, () -> contactService.createContact(contactRequest));
 	}
