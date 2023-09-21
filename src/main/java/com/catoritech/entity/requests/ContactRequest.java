@@ -2,15 +2,10 @@ package com.catoritech.entity.requests;
 
 public class ContactRequest {
 	private String firstName;
-
 	private String lastName;
-
 	private String address;
-
 	private String phone;
-
 	private String VAT;
-
 	private Long userId;
 	private Long businessId;;
 
@@ -83,5 +78,13 @@ public class ContactRequest {
 
 	public void setUserId(Long userId) {
 		this.userId = userId;
+	}
+
+	public Long getBusinessId() {
+		return businessId;
+	}
+
+	public void setBusinessId(Long businessId) {
+		this.businessId = businessId;
 	}
 }

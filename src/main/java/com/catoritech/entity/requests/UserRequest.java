@@ -4,9 +4,7 @@ import com.catoritech.entity.enums.UserRole;
 
 public class UserRequest {
 	private String username;
-
 	private String password;
-
 	private UserRole userRole;
 	private Long businessId;
 

@@ -55,9 +55,15 @@ public class ContactServiceImpl implements ContactService {
 
 	@Override
 	public Long createContact(ContactRequest contactRequest) {
-		Contact contact;
+		Contact contact = new Contact();
 		try {
-			contact = modelMapper.map(contactRequest,Contact.class);
+			contact.setFirstName(contactRequest.getFirstName());
+			contact.setLastName(contactRequest.getLastName());
+			contact.setAddress(contactRequest.getAddress());
+			contact.setPhone(contactRequest.getPhone());
+			contact.setVAT(contactRequest.getVAT());
+			contact.setUserId(contactRequest.getUserId());
+			contact.setBusinessId(contactRequest.getBusinessId());
 			contact = contactRepository.save(contact);
 			log.info(String.format(SUCCESSFULLY_ADDED_CONTACT_MESSAGE,contactRequest.getFirstName()));
 		}catch (DataIntegrityViolationException e){
