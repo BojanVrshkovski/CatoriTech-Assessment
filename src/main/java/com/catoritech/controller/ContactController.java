@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,6 +22,7 @@ import java.util.List;
 
 @RestController
 public class ContactController {
+
 	private final ContactService contactService;
 
 	@Autowired
@@ -73,7 +75,15 @@ public class ContactController {
 
 	@GetMapping("/contact/all")
 	@PreAuthorize("hasAnyAuthority('BUSINESS','INDIVIDUAL')")
-	public List<ContactDto> readAllContacts(){
+	public List<ContactDto> readAllContacts() {
 		return contactService.readAllContacts();
+	}
+
+	@PatchMapping("/contact/{id}")
+	@PreAuthorize("hasAnyAuthority('BUSINESS','INDIVIDUAL')")
+	public ResponseEntity<Void> updateContactById(
+		@PathVariable @NotNull Long id, @RequestBody ContactRequest contactRequest) {
+		contactService.updateContactById(id, contactRequest);
+		return ResponseEntity.noContent().build();
 	}
 }
