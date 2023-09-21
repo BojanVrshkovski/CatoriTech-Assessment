@@ -16,6 +16,7 @@ import com.catoritech.repository.ContactRepository;
 import com.catoritech.repository.UserRepository;
 import com.catoritech.service.ContactService;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -118,6 +119,7 @@ public class ContactServiceImpl implements ContactService {
 	}
 
 	@Override
+	@Transactional
 	public void updateContactById(Long id, ContactRequest contactRequest) {
 		userDetails(id);
 		Contact contact = contactRepository.findById(id).orElseThrow(ContactInvalidIdException::new);

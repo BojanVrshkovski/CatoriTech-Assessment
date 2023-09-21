@@ -79,7 +79,7 @@ public class ContactController {
 		return contactService.readAllContacts();
 	}
 
-	@PatchMapping("/contact/{id}")
+	@PatchMapping("/contact/update/{id}")
 	@PreAuthorize("hasAnyAuthority('BUSINESS','INDIVIDUAL')")
 	public ResponseEntity<Void> updateContactById(
 		@PathVariable @NotNull Long id, @RequestBody ContactRequest contactRequest) {

@@ -37,7 +37,7 @@ public class SecurityConfig {
 			new AntPathRequestMatcher("/contact/profile"),
 			new AntPathRequestMatcher("/contacts/{id}"),
 			new AntPathRequestMatcher("/contact/all"),
-			new AntPathRequestMatcher("/contact/{id}")
+			new AntPathRequestMatcher("/contact/update/{id}")
 		);
 		RequestMatcher permitAllMatchers =  new OrRequestMatcher(
 			new AntPathRequestMatcher("/addUser"),
