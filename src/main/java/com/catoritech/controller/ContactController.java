@@ -6,6 +6,7 @@ import com.catoritech.entity.requests.ContactRequest;
 import com.catoritech.service.ContactService;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -85,5 +87,16 @@ public class ContactController {
 		@PathVariable @NotNull Long id, @RequestBody ContactRequest contactRequest) {
 		contactService.updateContactById(id, contactRequest);
 		return ResponseEntity.noContent().build();
+	}
+
+	@GetMapping("/contacts")
+	public ResponseEntity<List<ContactDto>> searchContacts(@RequestParam("searchTerm") String searchTerm) {
+		List<ContactDto> foundContacts = contactService.searchContacts(searchTerm);
+
+		if (!foundContacts.isEmpty()) {
+			return new ResponseEntity<>(foundContacts, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 	}
 }
