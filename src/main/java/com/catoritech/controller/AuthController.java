@@ -4,7 +4,6 @@ import com.catoritech.entity.requests.UserRequest;
 import com.catoritech.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,7 +20,6 @@ public class AuthController {
 	}
 
 	@PostMapping("/register")
-	@PreAuthorize("hasAuthority('BUSINESS')")
 	public ResponseEntity<Void> registerUser(@RequestBody UserRequest userRequest) {
 		Long id = userService.registerUser(userRequest);
 
