@@ -11,5 +11,5 @@ public interface ContactService {
 	ContactDto readContactByIdNew(Long id);
 	void deleteContactById(Long id);
 	List<ContactDto> readAllContacts();
-	public void updateContactById(long id, ContactRequest contactRequest);
+	public void updateContactById(Long id, ContactRequest contactRequest);
 }

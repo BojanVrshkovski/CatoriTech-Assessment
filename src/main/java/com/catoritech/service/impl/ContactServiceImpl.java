@@ -10,6 +10,7 @@ import com.catoritech.exceptions.ContactAlreadyExistException;
 import com.catoritech.exceptions.ContactInvalidIdException;
 import com.catoritech.exceptions.EmptyContactListException;
 import com.catoritech.exceptions.IndividualUserCanNotAccessException;
+import com.catoritech.exceptions.NoRowsUpdatedException;
 import com.catoritech.exceptions.UserNotFoundException;
 import com.catoritech.repository.ContactRepository;
 import com.catoritech.repository.UserRepository;
@@ -31,6 +32,7 @@ import static com.catoritech.constants.LoggerAndExceptionConstants.ALREADY_EXIST
 import static com.catoritech.constants.LoggerAndExceptionConstants.BUSINESS_CAN_NOT_ACCESS_CONTACT;
 import static com.catoritech.constants.LoggerAndExceptionConstants.CONTACT_NOT_FOUND_FOR_USER_MESSAGE;
 import static com.catoritech.constants.LoggerAndExceptionConstants.INDIVIDUAL_USER_CAN_ACCESS_OWN_INFO;
+import static com.catoritech.constants.LoggerAndExceptionConstants.NO_ROWS_UPDATED;
 import static com.catoritech.constants.LoggerAndExceptionConstants.READ_CONTACT_MESSAGE;
 import static com.catoritech.constants.LoggerAndExceptionConstants.SUCCESSFULLY_ADDED_CONTACT_MESSAGE;
 import static com.catoritech.constants.LoggerAndExceptionConstants.USER_NOT_FOUND_MESSAGE;
@@ -116,8 +118,17 @@ public class ContactServiceImpl implements ContactService {
 	}
 
 	@Override
-	public void updateContactById(long id, ContactRequest contactRequest) {
-		
+	public void updateContactById(Long id, ContactRequest contactRequest) {
+		userDetails(id);
+		Contact contact = contactRepository.findById(id).orElseThrow(ContactInvalidIdException::new);
+
+		int updatedRows =contactRepository.updateContactById(id, contactRequest.getFirstName(), contact.getLastName(),
+		                                    contactRequest.getAddress(), contactRequest.getPhone(), contactRequest.getVAT());
+
+		if (updatedRows <= 0) {
+			log.error(String.format(NO_ROWS_UPDATED));
+			throw new NoRowsUpdatedException(NO_ROWS_UPDATED);
+		}
 	}
 
 	private void userDetails(Long id) {
